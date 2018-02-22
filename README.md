@@ -1,2 +1,2 @@
 # pqlickview
-Plain with QlickView
+Playing with QlickView
