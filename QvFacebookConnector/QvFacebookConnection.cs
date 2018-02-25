@@ -4,6 +4,7 @@ using System.Text;
 using QlikView.Qvx.QvxLibrary;
 using Facebook;
 using QvFacebookConnector.Constants;
+using log4net;
 
 namespace QvFacebookConnector
 {
@@ -12,6 +13,7 @@ namespace QvFacebookConnector
     /// </summary>
     public class QvFacebookConnection : QvxConnection
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(QvFacebookConnection));
         public FacebookOAuthResult QvFacebookOAuthResult { get; private set; }
 
         /// <summary>
@@ -20,6 +22,7 @@ namespace QvFacebookConnector
         public override void Init()
         {
             QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Notice, "Init()");
+            log.Debug("Init()");
 
             // Log in to facebook
             LoginToFacebook();
