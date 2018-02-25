@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using log4net;
 using QlikView.Qvx.QvxLibrary;
 
 namespace StulSoft.PQlickView.EventLogConnectorElaborate
 {
     public partial class Standalone : Form
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(Standalone));
         private QvEventLogServer _qvsos;
         private string _connectString = "";
         private string _sPath = "";
@@ -19,6 +21,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
         private void connectButton_Click(object sender, EventArgs e)
         {
             QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Debug, "connectButton_Click()");
+            log.Debug("connectButton_Click()");
 
             if (_qvsos != null)
             {
@@ -31,6 +34,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
         private void setPathButton_Click(object sender, EventArgs e)
         {
             QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Debug, "setPathButton_Click()");
+            log.Debug("setPathButton_Click()");
 
             var myFile = new SaveFileDialog { Filter = @"QlikView Applications (*.qvx)|*.qvx", FilterIndex = 1, RestoreDirectory = true };
 
@@ -47,6 +51,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
         private void generateButton_Click(object sender, EventArgs e)
         {
             QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Debug, "generateButton_Click()");
+            log.Debug("generateButton_Click()");
 
             var query = sqlStatementTextBox.Text;
 
@@ -84,9 +89,11 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
                     logTextBox.AppendText(msg);
                     logTextBox.AppendText(Environment.NewLine);
                     QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Notice, String.Format("generateButton_Click() - {0}", msg));
+                    log.Debug($"generateButton_Click() - {msg}");
 
                     try
                     {
+                        log.Debug($"new QvEventLogServer().RunStandalone(, \"StandalonePipe\", {_connectString}, {_sPath}, {query})");
                         new QvEventLogServer().RunStandalone("", "StandalonePipe", _connectString, _sPath, query);
                     }
                     catch (Exception exception)
@@ -95,6 +102,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
                         logTextBox.AppendText(Environment.NewLine);
                         logTextBox.AppendText(String.Format("Error: {0}", exception.Message));
                         logTextBox.AppendText(Environment.NewLine);
+                        log.Error(exception.Message, exception);
                     }
 
                     Cursor.Current = Cursors.Default;
@@ -103,6 +111,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
                     logTextBox.AppendText(String.Format("Done!"));
                     logTextBox.AppendText(Environment.NewLine);
                     QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Notice, "generateButton_Click() - Done!");
+                    log.Debug("generateButton_Click() - Done!");
                 }
             }
         }
@@ -118,6 +127,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
         private void doneButton_Click(object sender, EventArgs e)
         {
             QvxLog.Log(QvxLogFacility.Application, QvxLogSeverity.Debug, "doneButton_Click()");
+            log.Debug("doneButton_Click()");
 
             Application.Exit();
         }

@@ -1,9 +1,5 @@
 ﻿using log4net;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StulSoft.PQlickView.EventLogConnectorElaborate
@@ -20,6 +16,7 @@ namespace StulSoft.PQlickView.EventLogConnectorElaborate
             if (args != null && args.Length >= 2)
             {
                 log.Info("Running non standalone server...");
+                log.Debug($"parent name: {args[0]}, pipeLine: {args[1]}");
                 new QvEventLogServer().Run(args[0], args[1]);
             }
             else
